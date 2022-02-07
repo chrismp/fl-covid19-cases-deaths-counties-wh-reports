@@ -1,6 +1,6 @@
 library(DatawRappr)
 
-source('deaths-by-county.r')
+source('download-process.r')
 
 print("Starting chart updater")
 
@@ -8,7 +8,7 @@ updateDateFormat <- gsub(
   pattern = " 0",
   replacement = ' ',
   x = format(
-    x = max(rb$formattedupdatedate),
+    x = max(latestdatatotals$formattedupdatedate),
     format = "%B %d, %Y"
   )
 )
