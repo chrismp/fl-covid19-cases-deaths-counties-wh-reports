@@ -46,6 +46,7 @@ latestdatatotals <- filter(
 )
 
 latestdatatotals$casesper100k <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100000
+latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100
 latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
 
 # Write to file
