@@ -15,7 +15,8 @@ updateDateFormat <- gsub(
 
 chartIDs <- c(
   'SE3YD',
-  'LPOSr'
+  'LPOSr',
+  'eV6oK'
 )
 
 apikey <- Sys.getenv("DATAWRAPPER_API")
