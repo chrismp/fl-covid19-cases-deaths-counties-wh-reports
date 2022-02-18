@@ -40,6 +40,7 @@ m <- relocate(
   fips
 )
 
+# latest data totals
 latestdatatotals <- filter(
   .data = m,
   formatteddate == max(formatteddate,na.rm = T)
@@ -48,6 +49,23 @@ latestdatatotals <- filter(
 latestdatatotals$casesper100k <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100000
 latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100
 latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
+
+# last 30 days of deaths and cases
+thirtydaysagodata <- filter(
+  .data = m,
+  formatteddate == (max(m$formatteddate) - 30)
+)
+
+m30 <- merge(
+  x = latestdatatotals,
+  y = thirtydaysagodata,
+  by = 'fips'
+)
+
+m30$casespast30days <- m30$cases.x - m30$cases.y
+m30$deathspast30days <- m30$deaths.x - m30$deaths.y
+m30$casespast30days_per100k <- m30$casespast30days / m30$X2020.Total.Population.x * 100000
+m30$deathspast30days_per100K <- m30$deathspast30days / m30$X2020.Total.Population.x * 100000
 
 # Write to file
 o <- 'output'
@@ -60,7 +78,6 @@ write.csv(
   row.names = F
 )
 
-
 write.csv(
   x = latestdatatotals,
   file = paste0(o,'/covid-latest-total-cases-deaths-fl-counties.csv'),
@@ -68,3 +85,9 @@ write.csv(
   row.names = F
 )
 
+write.csv(
+  x = m30,
+  file = paste0(o,'/covid-cases-deaths-fl-counties-past30days.csv'),
+  na = '',
+  row.names = F
+)
