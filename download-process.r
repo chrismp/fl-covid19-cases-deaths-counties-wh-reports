@@ -49,6 +49,7 @@ latestdatatotals <- filter(
 latestdatatotals$casesper100k <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100000
 latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100
 latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
+latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$cases * 100
 
 # last 30 days of deaths and cases
 thirtydaysagodata <- filter(
@@ -66,6 +67,7 @@ m30$casespast30days <- m30$cases.x - m30$cases.y
 m30$deathspast30days <- m30$deaths.x - m30$deaths.y
 m30$casespast30days_per100k <- m30$casespast30days / m30$X2020.Total.Population.x * 100000
 m30$deathspast30days_per100K <- m30$deathspast30days / m30$X2020.Total.Population.x * 100000
+m30$casedeathratio <- m30$deathspast30days / m30$casespast30days * 100
 
 # Write to file
 o <- 'output'
