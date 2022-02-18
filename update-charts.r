@@ -17,7 +17,8 @@ chartIDs <- c(
   'SE3YD',
   'LPOSr',
   'eV6oK',
-  'fjDQL'
+  'fjDQL',
+  'GSUYL'
 )
 
 apikey <- Sys.getenv("DATAWRAPPER_API")
