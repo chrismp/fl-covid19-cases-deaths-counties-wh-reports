@@ -53,13 +53,13 @@ latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$ca
 
 # last 30 days of deaths and cases, where we have data for the latest date and 30 days prior
 maxdateoffset <- 0
-while (!endloop) {
+while (T) {
   thirtydaysagodata <- filter(
     .data = m,
     formatteddate == ((max(m$formatteddate)-maxdateoffset) - 30)
   )
   
-  endloop <- nrow(thirtydaysagodata) > 1
+  if(nrow(thirtydaysagodata) > 1) break
   maxdateoffset <- maxdateoffset + 1
 }
 
