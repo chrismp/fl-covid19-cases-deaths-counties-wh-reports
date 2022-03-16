@@ -51,11 +51,18 @@ latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.
 latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
 latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$cases * 100
 
-# last 30 days of deaths and cases
-thirtydaysagodata <- filter(
-  .data = m,
-  formatteddate == (max(m$formatteddate) - 30)
-)
+# last 30 days of deaths and cases, where we have data for the latest date and 30 days prior
+maxdateoffset <- 0
+while (!endloop) {
+  thirtydaysagodata <- filter(
+    .data = m,
+    formatteddate == ((max(m$formatteddate)-maxdateoffset) - 30)
+  )
+  
+  endloop <- nrow(thirtydaysagodata) > 1
+  maxdateoffset <- maxdateoffset + 1
+}
+
 
 m30 <- merge(
   x = latestdatatotals,

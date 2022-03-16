@@ -8,7 +8,7 @@ updateDateFormat <- gsub(
   pattern = " 0",
   replacement = ' ',
   x = format(
-    x = max(latestdatatotals$formatteddate),
+    x = m30$formatteddate.x[[1]],
     format = "%B %d, %Y"
   )
 )
