@@ -40,17 +40,6 @@ m <- relocate(
   fips
 )
 
-# latest data totals
-latestdatatotals <- filter(
-  .data = m,
-  formatteddate == max(formatteddate,na.rm = T)
-)
-
-latestdatatotals$casesper100k <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100000
-latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100
-latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
-latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$cases * 100
-
 # last 30 days of deaths and cases, where we have data for the latest date and 30 days prior
 maxdateoffset <- 0
 while (T) {
@@ -59,10 +48,19 @@ while (T) {
     formatteddate == ((max(m$formatteddate)-maxdateoffset) - 30)
   )
   
-  if(nrow(thirtydaysagodata) > 1) break
+  latestdatatotals <- filter(
+    .data = m,
+    formatteddate == max(formatteddate,na.rm = T) - maxdateoffset
+  )
+  
+  if(nrow(thirtydaysagodata)>1 && nrow(latestdatatotals)>1) break
   maxdateoffset <- maxdateoffset + 1
 }
 
+latestdatatotals$casesper100k <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100000
+latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.Total.Population * 100
+latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
+latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$cases * 100
 
 m30 <- merge(
   x = latestdatatotals,
@@ -100,3 +98,4 @@ write.csv(
   na = '',
   row.names = F
 )
+
