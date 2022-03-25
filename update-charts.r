@@ -14,11 +14,10 @@ updateDateFormat <- gsub(
 )
 
 chartIDs <- c(
-  'SE3YD',
-  'LPOSr',
-  'eV6oK',
-  'fjDQL',
-  'GSUYL'
+  'NyRfc', # past 30 days' death rates map
+  'lNr0E', # ifections past 30 days' map
+  'D0oqp', # total death tolls by fl county table
+  'HH5nw' # infections by fl county table
 )
 
 apikey <- Sys.getenv("DATAWRAPPER_API")
