@@ -40,20 +40,20 @@ m <- relocate(
   fips
 )
 
-# last 30 days of deaths and cases, where we have data for the latest date and 30 days prior
+# last X days of deaths and cases, where we have data for the latest date and X days prior
 maxdateoffset <- 0
 while (T) {
-  thirtydaysagodata <- filter(
+  xdaysagodata <- filter(
     .data = m,
-    formatteddate == ((max(m$formatteddate)-maxdateoffset) - 30)
+    formatteddate == ((max(formatteddate, na.rm=T)-maxdateoffset) - 7)
   )
   
   latestdatatotals <- filter(
     .data = m,
-    formatteddate == max(formatteddate,na.rm = T) - maxdateoffset
+    formatteddate == max(formatteddate,na.rm=T) - maxdateoffset
   )
   
-  if(nrow(thirtydaysagodata)>1 && nrow(latestdatatotals)>1) break
+  if(nrow(xdaysagodata)>1 && nrow(latestdatatotals)>1) break
   maxdateoffset <- maxdateoffset + 1
 }
 
@@ -62,17 +62,17 @@ latestdatatotals$casesper100 <- latestdatatotals$cases / latestdatatotals$X2020.
 latestdatatotals$deathsper100k <- latestdatatotals$deaths / latestdatatotals$X2020.Total.Population * 100000
 latestdatatotals$casedeathratio <- latestdatatotals$deaths / latestdatatotals$cases * 100
 
-m30 <- merge(
+mXdays <- merge(
   x = latestdatatotals,
-  y = thirtydaysagodata,
+  y = xdaysagodata,
   by = 'fips'
 )
 
-m30$casespast30days <- m30$cases.x - m30$cases.y
-m30$deathspast30days <- m30$deaths.x - m30$deaths.y
-m30$casespast30days_per100k <- m30$casespast30days / m30$X2020.Total.Population.x * 100000
-m30$deathspast30days_per100K <- m30$deathspast30days / m30$X2020.Total.Population.x * 100000
-m30$casedeathratio <- m30$deathspast30days / m30$casespast30days * 100
+mXdays$casespast30days <- mXdays$cases.x - mXdays$cases.y
+mXdays$deathspast30days <- mXdays$deaths.x - mXdays$deaths.y
+mXdays$casespast30days_per100k <- mXdays$casespast30days / mXdays$X2020.Total.Population.x * 100000
+mXdays$deathspast30days_per100K <- mXdays$deathspast30days / mXdays$X2020.Total.Population.x * 100000
+mXdays$casedeathratio <- mXdays$deathspast30days / mXdays$casespast30days * 100
 
 # Write to file
 o <- 'output'
@@ -93,7 +93,7 @@ write.csv(
 )
 
 write.csv(
-  x = m30,
+  x = mXdays,
   file = paste0(o,'/covid-cases-deaths-fl-counties-past30days.csv'),
   na = '',
   row.names = F
