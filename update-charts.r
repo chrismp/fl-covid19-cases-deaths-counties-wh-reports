@@ -8,14 +8,14 @@ updateDateFormat <- gsub(
   pattern = " 0",
   replacement = ' ',
   x = format(
-    x = m30$formatteddate.x[[1]],
+    x = mXdays$formatteddate.x[[1]],
     format = "%B %d, %Y"
   )
 )
 
 chartIDs <- c(
-  'NyRfc', # past 30 days' death rates map
-  'lNr0E', # ifections past 30 days' map
+  'NyRfc', # past X days' death rates map
+  'lNr0E', # ifections past X days' map
   'D0oqp', # total death tolls by fl county table
   'HH5nw' # infections by fl county table
 )

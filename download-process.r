@@ -68,11 +68,11 @@ mXdays <- merge(
   by = 'fips'
 )
 
-mXdays$casespast30days <- mXdays$cases.x - mXdays$cases.y
-mXdays$deathspast30days <- mXdays$deaths.x - mXdays$deaths.y
-mXdays$casespast30days_per100k <- mXdays$casespast30days / mXdays$X2020.Total.Population.x * 100000
-mXdays$deathspast30days_per100K <- mXdays$deathspast30days / mXdays$X2020.Total.Population.x * 100000
-mXdays$casedeathratio <- mXdays$deathspast30days / mXdays$casespast30days * 100
+mXdays$casespastXdays <- mXdays$cases.x - mXdays$cases.y
+mXdays$deathspastXdays <- mXdays$deaths.x - mXdays$deaths.y
+mXdays$casespastXdays_per100k <- mXdays$casespastXdays / mXdays$X2020.Total.Population.x * 100000
+mXdays$deathspastXdays_per100K <- mXdays$deathspastXdays / mXdays$X2020.Total.Population.x * 100000
+mXdays$casedeathratio <- mXdays$deathspastXdays / mXdays$casespastXdays * 100
 
 # Write to file
 o <- 'output'
@@ -94,7 +94,7 @@ write.csv(
 
 write.csv(
   x = mXdays,
-  file = paste0(o,'/covid-cases-deaths-fl-counties-past30days.csv'),
+  file = paste0(o,'/covid-cases-deaths-fl-counties-pastXdays.csv'),
   na = '',
   row.names = F
 )
